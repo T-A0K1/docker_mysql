@@ -1,0 +1,17 @@
+version: '3'
+services:
+  mysql:
+    build: ./mysql/ #すでにあるimageから起動する場合はimage:
+    container_name: mysql_1
+    volumes:
+      - ./mysql/db:/docker-entrypoint-initdb.d #初期データ
+      #永続化対象データ。mysqlvol_1ボリュームに,コンテナ上の/var/lib/mysql以下が保存される。
+      #/var/lib/mysqlはテーブルとかのデータが入っているはず。
+      - mysqlvol_1:/var/lib/mysql 
+    environment:
+      - MYSQL_ROOT_PASSWORD=password #環境変数
+    ports:
+      - "3306:3306"
+volumes:
+  mysqlvol_1: #保存対象のdockerボリュームを指定
+    #external: true
